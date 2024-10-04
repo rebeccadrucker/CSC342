@@ -1,14 +1,12 @@
 from flask import Flask, jsonify
-from flask_cors import CORS
 
 app = Flask(__name__)
-cors = CORS(app)
 
-@app.route("/hello")
+@app.route("/CSC342/hello")
 def hello():
     return "Hello, World!"
 
-@app.route("/csc342groups")
+@app.route("/CSC342/csc342groups")
 def csc_342_groups():
     groups = {1: {'Content Specialist': ['Julia Hogg'], 
                   'Designer': ['Sage DeVore'], 

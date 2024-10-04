@@ -6,7 +6,7 @@
             let groups = null;
 
             async function getGroups() {
-                let url = "http://127.0.0.1:5000/csc342groups";
+                let url = "http://127.0.0.1/CSC342/csc342groups";
                 let prom = await fetch(url);
                 groups = await prom.json();
                 buildDropdown();
