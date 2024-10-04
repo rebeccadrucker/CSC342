@@ -1,0 +1,69 @@
+<html>
+    <head>
+        <title>CSC 342 Groups</title>
+        <link rel="stylesheet" href="static/css/style.css" />
+        <script>
+            let groups = null;
+
+            async function getGroups() {
+                let url = "http://127.0.0.1:5000/csc342groups";
+                let prom = await fetch(url);
+                groups = await prom.json();
+                buildDropdown();
+            }
+
+            function buildDropdown() {
+                // set up select element
+                const select = document.createElement("select");
+                select.setAttribute("name", "groups");
+                select.setAttribute("id", "groups");
+                select.setAttribute("onchange", "dropdownChange()");
+                const placeholderOpt = document.createElement("option");
+                placeholderOpt.setAttribute("value", "placeholder");
+                placeholderOpt.appendChild(document.createTextNode("[Select a Group]"));
+                select.appendChild(placeholderOpt);
+
+                // add options from groups object
+                for (const groupNum in groups) {
+                    let option = document.createElement("option");
+                    option.appendChild(document.createTextNode(`Group ${groupNum}`));
+                    option.setAttribute("value", groupNum);
+                    select.appendChild(option);
+                }
+
+                // put select in div
+                document.getElementById("dropdown").appendChild(select);
+
+            }
+
+            function dropdownChange() {
+                // clear result div on change
+                document.getElementById("result").innerHTML = "";
+
+                // as long as placeholder option isn't selected, fill in the relevant info
+                const dropdownVal = document.querySelector("select").value;
+                if (dropdownVal != "placeholder") {
+                    const resultDiv = document.getElementById("result");
+                    const groupInfo = groups[dropdownVal];
+                    for (const role in groupInfo) {
+                        let paragraph = document.createElement("p");
+                        let span = document.createElement("span");
+                        span.setAttribute("class", "role");
+                        span.appendChild(document.createTextNode(role + ":"));
+                        paragraph.appendChild(span);
+                        paragraph.appendChild(document.createTextNode(' ' + groupInfo[role].join(' and ')));
+                        resultDiv.appendChild(paragraph);
+                    }
+                }
+            }
+
+            getGroups();
+                
+        </script>
+    </head>
+    <body>
+        <h1>CSC 342 Groups</h1>
+        <div id="dropdown"></div>
+        <div id="result"></div>
+    </body>
+</html>
